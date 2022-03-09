@@ -30,6 +30,16 @@ class GitHubReposRepository(
             }
         }
 
+    suspend fun loadRepo(name: String) : Result<GitHubRepo> =
+        withContext(ioDispatcher) {
+            try {
+                val repo = service.getRepo(name)
+                Result.success(repo)
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+
     private fun buildGitHubQuery(
         query: String,
         user: String?,

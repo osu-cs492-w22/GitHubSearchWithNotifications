@@ -1,5 +1,6 @@
 package com.example.android.githubsearchwithnotifications.api
 
+import com.example.android.githubsearchwithnotifications.data.GitHubRepo
 import com.example.android.githubsearchwithnotifications.data.GitHubSearchResults
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -7,6 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.http.Path
 
 interface GitHubService {
     @GET("search/repositories")
@@ -14,6 +16,11 @@ interface GitHubService {
         @Query("q") query: String,
         @Query("sort") sort: String? = "stars"
     ) : GitHubSearchResults
+
+    @GET("repos/{name}")
+    suspend fun getRepo(
+        @Path("name", encoded = true) name: String
+    ) : GitHubRepo
 
     companion object {
         private const val BASE_URL = "https://api.github.com/"
